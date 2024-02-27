@@ -163,18 +163,17 @@ class MainWindow(QMainWindow):
 
     def stop_test(self):
         """ Stop the test """
-        # kill the thread(s)
-        self.worker.terminate()
-        self.worker2.terminate()
-
         self.msg = QMessageBox()
         self.msg.setIcon(QMessageBox.Icon.Warning)
         self.msg.setText("Are you sure to stop the test?")
         self.msg.setWindowTitle("Stop Test")
-        self.msg.setStandardButtons(
+        ret = self.msg.setStandardButtons(
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         self.msg.show()
-        self.test_stop_info()
+        if ret == QMessageBox.StandardButton.Yes:
+            self.worker.quit()
+            self.worker2.quit()
+            self.test_stop_info()
 
 
 def start_ui():
