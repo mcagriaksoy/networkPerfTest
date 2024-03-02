@@ -33,5 +33,9 @@ To run, please type:
 
 <img src="img/3.png" width="250" height="250">
 
-Iperf3 and NetIO licenses are valid.
-Rest is licensed under <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
+Iperf3 and NetIO licenses are valid and copied. You can access these on following:
+
+https://github.com/esnet/iperf
+https://github.com/kai-uwe-rommel/netio
+
+Rest licensed under <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
