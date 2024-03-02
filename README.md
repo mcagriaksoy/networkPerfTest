@@ -1,8 +1,9 @@
-# networkPerfTest
-
-![Main](img/icon.png width="250" height="250")
-
+# Network Performance Test Tool
+<p align="center">
+<img src="img/icon.png" width="290" height="290">
+</p>
 An useful toolkit for the network performance, stress and throughput test.
+
 <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
 <a href="https://github.com/mcagriaksoy/networkPerfTest" title="Go to GitHub repo"><img src="https://img.shields.io/static/v1?label=mcagriaksoy&message=networkPerfTest&color=blue&logo=github" alt="mcagriaksoy - networkPerfTest"></a>
 <a href="https://github.com/mcagriaksoy/networkPerfTest/releases/"><img src="https://img.shields.io/github/tag/mcagriaksoy/networkPerfTest?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a>
@@ -15,8 +16,7 @@ An useful toolkit for the network performance, stress and throughput test.
 ![Initial Version Help Screen](img/ui2.jpg)
 
 # Usage
-
-![Icon 2](img/1.png width="250" height="250")
+<img src="img/1.png" width="250" height="250">
 
 This tool is still under development. Feel free to open issue or bug report.
 To run, please type:
@@ -24,14 +24,14 @@ To run, please type:
 
 # Requirements
 
-![Icon 2](img/2.png width="250" height="250")
+<img src="img/2.png" width="250" height="250">
 
 [![PyQt - >= 6.0](https://img.shields.io/badge/PyQt->_6.0-2ea44f)](https://wiki.python.org/moin/PyQt)
 [![PyQt_sip - >= 13.0](https://img.shields.io/badge/PyQt_sip->_13.0-2ea44f)](https://pypi.org/project/PyQt6-sip/)
 
 # License
 
-![Icon 2](img/3.png width="250" height="250")
+<img src="img/3.png" width="250" height="250">
 
 Iperf3 and NetIO licenses are valid.
 Rest is licensed under <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
