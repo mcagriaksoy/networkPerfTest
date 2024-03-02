@@ -21,7 +21,6 @@ except ImportError:
 class IperfThread(QThread):
     """ Iperf Thread Class """
     iperf_log = pyqtSignal(str)
-    iperf_started = pyqtSignal()
     iperf_finished = pyqtSignal()
 
     @pyqtSlot()
@@ -33,7 +32,6 @@ class IperfThread(QThread):
 
     def run(self):
         """ Run the iperf command """
-        self.iperf_started.emit()
         # Get the current working directory
         cwd = os.getcwd()
         if self.mode == "-s":
@@ -43,16 +41,18 @@ class IperfThread(QThread):
                 iperf = cwd + "/../tools/iperf3.exe" + " -c " + self.ip + " -u"
             else:
                 iperf = cwd + "/../tools/iperf3.exe" + " -c " + self.ip
-        self.iperf_log.emit(iperf)
-        result = subprocess.run(iperf, capture_output=True, text=True)
-        self.iperf_log.emit(result.stdout)
-        # self.iperf_finished.emit()
+        process = subprocess.Popen(
+            iperf, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        # Read the output line by line
+        for line in iter(process.stdout.readline, b''):
+            self.iperf_log.emit(line.strip())
+        process.wait()
+        self.iperf_finished.emit()
 
 
 class NetIOThread(QThread):
     """ NetIO Thread Class """
     netio_log = pyqtSignal(str)
-    netio_started = pyqtSignal()
     netio_finished = pyqtSignal()
 
     @pyqtSlot()
@@ -64,7 +64,6 @@ class NetIOThread(QThread):
 
     def run(self):
         """ Run the netio command """
-        self.netio_started.emit()
         # Get the current working directory
         cwd = os.getcwd()
         if self.mode == "-s":
@@ -88,7 +87,7 @@ class MainWindow(QMainWindow):
         loadUi('ui.ui', self)  # Load the .ui file
         self.show()  # Show the GUI
         self.msg = None
-
+        # Connect the buttons to the functions
         self.start_button.clicked.connect(self.start_test)
         self.stop_button.clicked.connect(self.stop_test)
 
@@ -110,7 +109,7 @@ class MainWindow(QMainWindow):
         # If we are client Get the IP address from user
         if mode == "-c":
             ip, ok = QInputDialog.getText(
-                self, "IP Address", "Enter the Server IP Address:")
+                self, "IP Address", "Enter the Server IP Address:", text="127.0.0.1")
             if ok:
                 ip = ip
                 mode = ""
@@ -119,42 +118,56 @@ class MainWindow(QMainWindow):
         else:
             ip = ""
 
+        self.test_start_info()
         if self.netio_button.isChecked():
             # Start the test
             self.worker = NetIOThread(mode, protocol, ip)
-            self.worker.netio_started.connect(self.test_start_info)
             self.worker.netio_finished.connect(self.test_finish_info)
             self.worker.netio_log.connect(self.log_output)
             self.worker.start()
         else:
             self.worker2 = IperfThread(mode, protocol, ip)
-            self.worker2.iperf_started.connect(self.test_start_info)
             self.worker2.iperf_finished.connect(self.test_finish_info)
             self.worker2.iperf_log.connect(self.log_output)
             self.worker2.start()
 
     def log_output(self, output):
         """ Log the output """
-        self.textEdit.insertPlainText("{}".format(output))
+        # if incoming string has error string, show in red color!
+        if "error" in output.lower():
+            self.textEdit.insertHtml(
+                "<font color='red'>{}</font><font color='black'></font>".format(output))
+        else:
+            self.textEdit.insertPlainText("{}".format(output))
+
+        if "Done" in output:
+            self.textEdit.insertHtml(
+                "<font color='green'>{}</font><font color='black'></font>".format(output))
 
     def test_start_info(self):
         """ Show the test start information """
         self.msg = QMessageBox()
         self.msg.setIcon(QMessageBox.Icon.Information)
-        self.msg.setText("Test Started!")
-        self.msg.setWindowTitle("Test Started")
+        self.msg.setWindowTitle("Test Started!")
+        self.msg.setText("The test has been started...")
         self.msg.show()
 
     def test_stop_info(self):
         """ Show the test stop information """
+        self.worker2.quit()
+        self.worker.quit()
+
         self.msg = QMessageBox()
         self.msg.setIcon(QMessageBox.Icon.Information)
-        self.msg.setText("Test Stopped!")
-        self.msg.setWindowTitle("Test Stopped")
+        self.msg.setWindowTitle("Test Stopped!")
+        self.msg.setText("The test has been stopped!")
         self.msg.show()
 
     def test_finish_info(self):
         """ Show the test finish information """
+        self.worker2.quit()
+        self.worker.quit()
+
         self.msg = QMessageBox()
         self.msg.setIcon(QMessageBox.Icon.Information)
         self.msg.setText("Test Finished!")
