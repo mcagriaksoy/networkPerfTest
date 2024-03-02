@@ -2,7 +2,7 @@
 <p align="center">
 <img src="img/icon.png" width="290" height="290">
 </p>
-An useful toolkit for the network performance, stress and throughput test.
+Network Performance tool is a helper UI tool for testing your network TCP throughput and possible errors. Also you can perform some stress test to detect your switch, router or network adapter behaviour.
 
 <a href="#license"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
 <a href="https://github.com/mcagriaksoy/networkPerfTest" title="Go to GitHub repo"><img src="https://img.shields.io/static/v1?label=mcagriaksoy&message=networkPerfTest&color=blue&logo=github" alt="mcagriaksoy - networkPerfTest"></a>
